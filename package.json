@@ -8,20 +8,33 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "deploy": "npm run build && cdk deploy"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.94.1",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
+    "aws-cdk": "1.94.1",
+    "esbuild": "^0.10.0",
     "jest": "^26.4.2",
     "ts-jest": "^26.2.0",
-    "aws-cdk": "1.94.1",
     "ts-node": "^9.0.0",
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "@aws-cdk/core": "1.94.1",
-    "source-map-support": "^0.5.16"
+    "@aws-cdk/aws-lambda": "^1.94.1",
+    "@aws-cdk/aws-lambda-event-sources": "^1.94.1",
+    "@aws-cdk/aws-lambda-nodejs": "^1.94.1",
+    "@aws-cdk/aws-s3": "^1.94.1",
+    "@aws-cdk/aws-s3-assets": "^1.94.1",
+    "@aws-cdk/core": "^1.94.1",
+    "@shelf/aws-lambda-tesseract": "^3.0.0",
+    "@types/aws-lambda": "^8.10.72",
+    "@types/unzipper": "^0.10.3",
+    "aws-sdk": "^2.870.0",
+    "firebase-admin": "^9.5.0",
+    "tesseract.js": "^2.1.4",
+    "unzipper": "^0.10.11"
   }
 }
