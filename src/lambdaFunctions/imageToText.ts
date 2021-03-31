@@ -21,10 +21,12 @@ const init = async () => {
     process.env.FIREBASE_SERVICE_ACCOUNT_KEY!,
     serviceAccountKeyPath
   );
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccountKeyPath),
-    storageBucket: "labellingplatform.appspot.com",
-  });
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccountKeyPath),
+      storageBucket: "labellingplatform.appspot.com",
+    });
+  }
   mkdirSync(tesseractAssetPath);
   await downloadFile(
     process.env.TESSERACT_MODEL_BUCKET_NAME!,
