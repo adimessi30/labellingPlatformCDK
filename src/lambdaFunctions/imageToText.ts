@@ -28,7 +28,7 @@ const init = async () => {
   mkdirSync(tesseractAssetPath);
   await downloadFile(
     process.env.TESSERACT_MODEL_BUCKET_NAME!,
-    process.env.TESSERACT_MODEL_BUCKET_KEY!,
+    process.env.TESSERACT_MODEL_KEY!,
     tesseractAssetPath + tesseractModelSuffix
   );
 };
