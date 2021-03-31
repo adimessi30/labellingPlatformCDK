@@ -22,6 +22,7 @@ const uploadToS3 = async (bucket: string, key: string, body: S3.Body) =>
 
 exports.handler = async (event: S3Event) => {
   for (const record of event.Records) {
+    console.log("Processing record:", record);
     const srcBucket = record.s3.bucket.name;
     const srcKey = decodeURIComponent(record.s3.object.key.replace(/\+/g, " "));
     const params = {

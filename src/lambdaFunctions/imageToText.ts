@@ -58,6 +58,7 @@ const downloadFile = async (
 };
 
 const fetchText = async (imagePath: string, lang: string): Promise<string> => {
+  console.log("Processing image from:", imagePath);
   const {
     data: { text },
   } = await Tesseract.recognize(imagePath, lang, {
@@ -76,6 +77,7 @@ exports.handler = async (event: S3Event) => {
   const artifactsCollection = admin.firestore().collection("Artifacts");
   const projectsCollection = admin.firestore().collection("Projects");
   for (const record of event.Records) {
+    console.log("Processing record:", record);
     try {
       const srcBucket = record.s3.bucket.name;
       const srcKey = decodeURIComponent(
@@ -95,22 +97,30 @@ exports.handler = async (event: S3Event) => {
       const uploadFileName = `${artifactId}_${fileIndex}`;
       const textFilePath = imageFilePath.replace(".jpg", ".txt");
       writeFileSync(textFilePath, textContent);
+      console.log(
+        "Uploading text content to:",
+        `${projectId}/${uploadFileName}.txt`
+      );
       await firebaseBucket.upload(textFilePath, {
         destination: `${projectId}/${uploadFileName}.txt`,
         contentType: "text/plain",
       });
+      console.log("Uploading image to:", `${projectId}/${uploadFileName}.jpg`);
       await firebaseBucket.upload(imageFilePath, {
         destination: `${projectId}/${uploadFileName}.jpg`,
         contentType: "image/jpeg",
       });
       if (parseInt(fileIndex) === parseInt(partitions) - 1) {
+        console.log("Updating artifact:", artifactId);
         await artifactsCollection.doc(artifactId).update({
           partitions: parseInt(partitions),
         });
+        console.log("Updating project:", projectId);
         await projectsCollection.doc(projectId).update({
           artifactIds: admin.firestore.FieldValue.arrayUnion(artifactId),
         });
       }
+      console.log("Done processing record:", record);
     } catch (error) {
       console.log(error);
       return;

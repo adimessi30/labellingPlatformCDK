@@ -85,7 +85,7 @@ export class LabellingPlatformCdkStack extends Stack {
       retryAttempts: 0,
       description:
         "This lambda converts PDF files to images for each of the pages found in the PDF",
-      memorySize: 1024,
+      memorySize: 10240,
     });
     pdfToImageHandler.addEventSource(pdfUploadEventSource);
 
@@ -97,7 +97,7 @@ export class LabellingPlatformCdkStack extends Stack {
       timeout: Duration.minutes(5),
       retryAttempts: 0,
       description: "This lambda converts image files to text files",
-      memorySize: 1024,
+      memorySize: 10240,
       environment: {
         FIREBASE_SERVICE_ACCOUNT_BUCKET_NAME:
           firebaseServiceAccountKey.s3BucketName,
