@@ -1,5 +1,4 @@
 const fs = require("fs");
-const serviceAccountLocalPath = "./serviceAccountKey.json";
 
 const downloadFile = async (bucketName, key, destPath) => {
   console.log("Downloading serviceAccountKey.json....");
@@ -16,16 +15,19 @@ const downloadFile = async (bucketName, key, destPath) => {
   });
 };
 
-if (!fs.existsSync(serviceAccountLocalPath)) {
-  const serviceAccountBucket =
-    "labellingplatformcdkstac-labellingplatformresourc-qz65hswvkznk";
-  const serviceAccountKeyPath = "credentials/serviceAccountKey.json";
-  downloadFile(
-    serviceAccountBucket,
-    serviceAccountKeyPath,
-    serviceAccountLocalPath
-  );
-} else {
-  console.log("serviceAccountKey.json already exists....");
-}
-console.log("File exists ? = ", fs.existsSync(serviceAccountLocalPath));
+(async () => {
+  const serviceAccountLocalPath = "./serviceAccountKey.json";
+  if (!fs.existsSync(serviceAccountLocalPath)) {
+    const serviceAccountBucket =
+      "labellingplatformcdkstac-labellingplatformresourc-qz65hswvkznk";
+    const serviceAccountKeyPath = "credentials/serviceAccountKey.json";
+    await downloadFile(
+      serviceAccountBucket,
+      serviceAccountKeyPath,
+      serviceAccountLocalPath
+    );
+  } else {
+    console.log("serviceAccountKey.json already exists....");
+  }
+  console.log("File exists ? = ", fs.existsSync(serviceAccountLocalPath));
+})();
