@@ -9,6 +9,7 @@ jobs:
         with:
           node-version: "14"
       - run: yarn install
+      - run: node init.js
       - name: AWS CDK Deploy
         uses: MikeBild/aws-cdk-js-github-action@1.0.0
         with:
