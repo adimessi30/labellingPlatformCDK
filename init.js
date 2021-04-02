@@ -28,3 +28,4 @@ if (!fs.existsSync(serviceAccountLocalPath)) {
 } else {
   console.log("serviceAccountKey.json already exists....");
 }
+console.log("File exists ? = ", fs.existsSync(destPath));
