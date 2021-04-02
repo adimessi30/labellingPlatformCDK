@@ -5,11 +5,11 @@
     "labelling_platform_cdk": "bin/labelling_platform_cdk.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "node init.js && tsc",
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "deploy": "npm run build && cdk deploy"
+    "deploy": "node init.js && cdk deploy"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.94.1",
