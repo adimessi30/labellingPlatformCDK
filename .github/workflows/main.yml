@@ -4,14 +4,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: GitHub Checkout
-        uses: actions/checkout@v1
-
-      - name: Yarn Install
-        uses: nuxt/actions-yarn@master
+      - uses: actions/checkout@v2
+      - uses: borales/actions-yarn@v2.0.0
         with:
-          args: install
-
+          cmd: install # will run `yarn install` command
       - name: AWS CDK Deploy
         uses: MikeBild/aws-cdk-js-github-action@1.0.0
         with:
