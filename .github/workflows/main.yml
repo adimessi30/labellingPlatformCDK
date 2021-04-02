@@ -10,10 +10,10 @@ jobs:
           node-version: "14"
       - run: yarn install
       - run: node init.js
-      - run: node test.js
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - run: node test.js
       - name: AWS CDK Deploy
         uses: scottbrenner/aws-cdk-action@master
         with:
