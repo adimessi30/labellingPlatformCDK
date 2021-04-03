@@ -15,6 +15,7 @@ jobs:
           node-version: "14.x"
       - run: yarn install
       - run: yarn add @aws-cdk/core
+      - run: yarn build
       - name: cdk synth
         uses: youyo/aws-cdk-github-actions@v2
         with:
