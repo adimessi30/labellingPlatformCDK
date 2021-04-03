@@ -3,6 +3,9 @@ on: [push]
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ../../
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -10,7 +13,6 @@ jobs:
           node-version: "14"
       - run: yarn install
       - name: AWS CDK Deploy
-        working-directory: ../../
         uses: scottbrenner/aws-cdk-action@master
         with:
           args: deploy
