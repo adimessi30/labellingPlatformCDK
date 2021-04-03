@@ -1,5 +1,3 @@
-import * as path from "path";
-
 import { Bucket, CorsRule, EventType, HttpMethods } from "@aws-cdk/aws-s3";
 import { Code, Function, LayerVersion, Runtime } from "@aws-cdk/aws-lambda";
 import { Construct, Duration, Stack, StackProps } from "@aws-cdk/core";
@@ -67,14 +65,14 @@ export class LabellingPlatformCdkStack extends Stack {
     );
 
     const tesseractAssets = new Asset(this, "TesseractAssets", {
-      path: path.join(__dirname, "./src/tesseractAssets/eng.traineddata"),
+      path: "./src/tesseractAssets/eng.traineddata",
     });
 
     const pdfToImageHandler = new Function(this, "PdfToImageHandler", {
       runtime: Runtime.NODEJS_10_X,
       layers: [ghostScriptLayer],
       handler: "pdfToImage.handler",
-      code: Code.fromAsset(path.join(__dirname, "./src/lambdaFunctions")),
+      code: Code.fromAsset("./src/lambdaFunctions"),
       timeout: Duration.minutes(5),
       retryAttempts: 0,
       description:
@@ -84,7 +82,7 @@ export class LabellingPlatformCdkStack extends Stack {
     pdfToImageHandler.addEventSource(pdfUploadEventSource);
 
     const imageToTextHandler = new NodejsFunction(this, "ImageToTextHandler", {
-      entry: path.join(__dirname, "./src/lambdaFunctions/imageToText.ts"),
+      entry: "./src/lambdaFunctions/imageToText.ts",
       layers: [tesseractJsLayer, firebaseAdminLayer],
       handler: "handler",
       runtime: Runtime.NODEJS_14_X,
