@@ -1,3 +1,5 @@
+import * as path from "path";
+
 import { Bucket, CorsRule, EventType, HttpMethods } from "@aws-cdk/aws-s3";
 import { Code, Function, LayerVersion, Runtime } from "@aws-cdk/aws-lambda";
 import { Construct, Duration, Stack, StackProps } from "@aws-cdk/core";
@@ -8,7 +10,6 @@ import {
 
 import { Asset } from "@aws-cdk/aws-s3-assets";
 import { NodejsFunction } from "@aws-cdk/aws-lambda-nodejs";
-import path from "path";
 
 export class LabellingPlatformCdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
