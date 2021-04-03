@@ -5,11 +5,11 @@
     "labelling_platform_cdk": "bin/labelling_platform_cdk.js"
   },
   "scripts": {
-    "build": "node init.js && tsc",
+    "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "deploy": "node init.js && cdk deploy"
+    "deploy": "cdk deploy"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.94.1",
@@ -33,6 +33,7 @@
     "@types/aws-lambda": "^8.10.72",
     "@types/unzipper": "^0.10.3",
     "aws-sdk": "^2.870.0",
+    "dotenv": "^8.2.0",
     "firebase-admin": "^9.5.0",
     "tesseract.js": "^2.1.4",
     "unzipper": "^0.10.11"

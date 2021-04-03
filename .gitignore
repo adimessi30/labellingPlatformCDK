@@ -9,3 +9,4 @@ cdk.out
 awsCredentials.csv
 serviceAccountKey.json
 .vscode
+.env

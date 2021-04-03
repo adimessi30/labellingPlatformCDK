@@ -3,7 +3,9 @@ import { mkdirSync, writeFileSync } from "fs";
 import { Extract } from "unzipper";
 import { S3 } from "aws-sdk";
 import { S3Event } from "aws-lambda";
+import dotenv from "dotenv";
 
+dotenv.config();
 const layerRootPath = "/opt/nodejs/node_modules";
 const tesseractLayerPath = "/tesseract.js";
 const firebaseAdminLayerPath = "/firebase-admin";
@@ -15,12 +17,20 @@ const serviceAccountKeyPath = "/tmp/serviceAccountKey.json";
 const tesseractAssetPath = "/tmp/tesseractAssets";
 const tesseractModelSuffix = "/eng.traineddata";
 
-const init = async () => {
-  await downloadFile(
-    process.env.FIREBASE_SERVICE_ACCOUNT_BUCKET_NAME!,
-    process.env.FIREBASE_SERVICE_ACCOUNT_KEY!,
-    serviceAccountKeyPath
+const generateServiceAccountKeyFile = () => {
+  const serviceAccountJson = JSON.parse(
+    Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY!, "base64").toString()
   );
+  writeFileSync(serviceAccountKeyPath, JSON.stringify(serviceAccountJson));
+};
+
+const init = async () => {
+  // await downloadFile(
+  //   process.env.FIREBASE_SERVICE_ACCOUNT_BUCKET_NAME!,
+  //   process.env.FIREBASE_SERVICE_ACCOUNT_KEY!,
+  //   serviceAccountKeyPath
+  // );
+  generateServiceAccountKeyFile();
   if (!admin.apps.length) {
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccountKeyPath),
