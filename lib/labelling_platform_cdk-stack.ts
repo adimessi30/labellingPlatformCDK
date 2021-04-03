@@ -8,6 +8,7 @@ import {
 
 import { Asset } from "@aws-cdk/aws-s3-assets";
 import { NodejsFunction } from "@aws-cdk/aws-lambda-nodejs";
+import path from "path";
 
 export class LabellingPlatformCdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -64,23 +65,15 @@ export class LabellingPlatformCdkStack extends Stack {
       "arn:aws:lambda:us-east-1:794330213412:layer:firebase-admin:1"
     );
 
-    // const firebaseServiceAccountKey = new Asset(
-    //   this,
-    //   "FirebaseServiceAccountKey",
-    //   {
-    //     path: "./serviceAccountKey.json",
-    //   }
-    // );
-
     const tesseractAssets = new Asset(this, "TesseractAssets", {
-      path: "./src/tesseractAssets/eng.traineddata",
+      path: path.join(__dirname, "./src/tesseractAssets/eng.traineddata"),
     });
 
     const pdfToImageHandler = new Function(this, "PdfToImageHandler", {
       runtime: Runtime.NODEJS_10_X,
       layers: [ghostScriptLayer],
       handler: "pdfToImage.handler",
-      code: Code.fromAsset("./src/lambdaFunctions"),
+      code: Code.fromAsset(path.join(__dirname, "./src/lambdaFunctions")),
       timeout: Duration.minutes(5),
       retryAttempts: 0,
       description:
@@ -90,7 +83,7 @@ export class LabellingPlatformCdkStack extends Stack {
     pdfToImageHandler.addEventSource(pdfUploadEventSource);
 
     const imageToTextHandler = new NodejsFunction(this, "ImageToTextHandler", {
-      entry: "./src/lambdaFunctions/imageToText.ts",
+      entry: path.join(__dirname, "./src/lambdaFunctions/imageToText.ts"),
       layers: [tesseractJsLayer, firebaseAdminLayer],
       handler: "handler",
       runtime: Runtime.NODEJS_14_X,
@@ -99,9 +92,6 @@ export class LabellingPlatformCdkStack extends Stack {
       description: "This lambda converts image files to text files",
       memorySize: 10240,
       environment: {
-        // FIREBASE_SERVICE_ACCOUNT_BUCKET_NAME:
-        //   firebaseServiceAccountKey.s3BucketName,
-        // FIREBASE_SERVICE_ACCOUNT_KEY: firebaseServiceAccountKey.s3ObjectKey,
         FIREBASE_SERVICE_ACCOUNT_KEY: process.env.FIREBASE_SERVICE_ACCOUNT_KEY!,
         TESSERACT_MODEL_BUCKET_NAME: tesseractAssets.s3BucketName,
         TESSERACT_MODEL_KEY: tesseractAssets.s3ObjectKey,
@@ -112,7 +102,6 @@ export class LabellingPlatformCdkStack extends Stack {
     [pdfToImageHandler, imageToTextHandler].forEach((resource) =>
       bucket.grantReadWrite(resource)
     );
-    // firebaseServiceAccountKey.grantRead(imageToTextHandler);
     tesseractAssets.grantRead(imageToTextHandler);
   }
 }
