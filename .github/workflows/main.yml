@@ -10,6 +10,7 @@ jobs:
           node-version: "14"
       - run: yarn install
       - name: AWS CDK Deploy
+        working-directory: ../../
         uses: scottbrenner/aws-cdk-action@master
         with:
           args: deploy
