@@ -1,5 +1,7 @@
 name: CICD
-on: [push]
+on:
+  push:
+    branches: [master]
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -24,7 +26,6 @@ jobs:
       - name: Deploy CDK
         run: |
           cdk deploy --app ./build/cdk.out --require-approval never "*"
-        if: gitub.ref == 'refs/heads/master'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
