@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "jest",
+    "test": "jest --detectOpenHandles --testTimeout=30000",
     "cdk": "cdk",
     "deploy": "cdk deploy"
   },

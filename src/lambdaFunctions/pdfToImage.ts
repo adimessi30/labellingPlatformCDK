@@ -33,7 +33,8 @@ exports.handler = async (event: S3Event) => {
     const pdfFilePath = "/tmp/" + pdfFileName;
     const outputPrefix = pdfFileName!.replace(".pdf", "");
     const data = await s3.getObject(params).promise();
-    writeFileSync(pdfFilePath, data.Body?.toString()!);
+    // @ts-ignore
+    writeFileSync(pdfFilePath, data.Body!);
     await ghostScriptPDF(pdfFilePath, outputPrefix);
     const outputFiles = readdirSync("/tmp/").filter(
       (file) => file.startsWith(outputPrefix) && file.endsWith(".jpg")

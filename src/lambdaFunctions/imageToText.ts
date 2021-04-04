@@ -25,11 +25,6 @@ const generateServiceAccountKeyFile = () => {
 };
 
 const init = async () => {
-  // await downloadFile(
-  //   process.env.FIREBASE_SERVICE_ACCOUNT_BUCKET_NAME!,
-  //   process.env.FIREBASE_SERVICE_ACCOUNT_KEY!,
-  //   serviceAccountKeyPath
-  // );
   generateServiceAccountKeyFile();
   if (!admin.apps.length) {
     admin.initializeApp({
@@ -63,7 +58,8 @@ const downloadFile = async (
       .pipe(Extract({ path: destPath }))
       .promise();
   } else {
-    writeFileSync(destPath, (await s3Object.promise()).Body?.toString()!);
+    // @ts-ignore
+    writeFileSync(destPath, (await s3Object.promise()).Body!);
   }
 };
 
