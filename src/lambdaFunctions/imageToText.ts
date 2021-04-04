@@ -63,7 +63,7 @@ const downloadFile = async (
       .pipe(Extract({ path: destPath }))
       .promise();
   } else {
-    writeFileSync(destPath, (await s3Object.promise()).Body);
+    writeFileSync(destPath, (await s3Object.promise()).Body?.toString()!);
   }
 };
 
