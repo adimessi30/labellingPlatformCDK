@@ -11,6 +11,7 @@ jobs:
         with:
           node-version: "14.x"
       - run: npm install
+      - run: npm install aws-cdk
       - run: npm run build
       - name: cdk synth
         uses: youyo/aws-cdk-github-actions@v2
